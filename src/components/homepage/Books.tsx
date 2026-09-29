@@ -3,9 +3,15 @@ import BookCard from '../shared/BookCard';
 import { IBook } from '@/types/books.type';
 
 const getBooks = async () => {
-    const response = await fetch('http://localhost:3000/booksData.json');
-    const data = await response.json();
-    return data;
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/booksData.json`);
+        const data = await response.json();
+        return data;
+    }
+    catch(error){
+        console.error("Error fetching books data:", error);
+        return [];
+    }
 };
 
 const Books = async () => {
@@ -22,7 +28,7 @@ const Books = async () => {
 
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
 
-                {booksData.slice(0,9).map((book:IBook , ind:number) => (
+                {booksData.slice(0, 9).map((book: IBook, ind: number) => (
                     <BookCard key={ind} book={book} />
                 ))}
 
